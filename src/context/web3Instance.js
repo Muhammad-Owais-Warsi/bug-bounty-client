@@ -1,14 +1,14 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 
-// Memory-only store for Web3 instance
-const useWeb3Memory = create((set) => ({
+
+export const web3MemoryStore = create((set) => ({
   web3Instance: null,
   setWeb3Instance: (instance) => set({ web3Instance: instance }),
 }));
 
-// Persisted store for connection status and wallet info
-const useWeb3Persisted = create(
+
+export const web3PersistedStore = create(
   persist(
     (set) => ({
       isConnected: false,
@@ -28,16 +28,16 @@ const useWeb3Persisted = create(
   )
 );
 
-// Combined hook for easy access
-export const useStore = () => {
-  const { web3Instance, setWeb3Instance } = useWeb3Memory();
+
+export const useWeb3Store = () => {
+  const { web3Instance, setWeb3Instance } = web3MemoryStore();
   const { 
     isConnected, 
     walletAddress,
     loading, 
     setConnectionInfo, 
     setLoading 
-  } = useWeb3Persisted();
+  } = web3PersistedStore();
 
   const setWeb3 = async (web3Instance) => {
     if (web3Instance) {
@@ -57,10 +57,7 @@ export const useStore = () => {
     }
   };
 
-  const disconnect = () => {
-    setWeb3Instance(null);
-    setConnectionInfo(false, null);
-  };
+ 
 
   return {
     web3: web3Instance,
@@ -68,7 +65,6 @@ export const useStore = () => {
     walletAddress,
     loading,
     setWeb3,
-    disconnect,
     setLoading
   };
 };
