@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useWeb3Store } from "../context/web3Instance";
-import create from "../utils/create";
+import createBounty from "../utils/create";
+import availBounty from "../utils/avail";
 
 export default function Home() {
     const { web3, isConnected, loading } = useWeb3Store();
@@ -25,8 +26,9 @@ export default function Home() {
     return (
         <div className="p-8">
             <h1 className="text-2xl font-bold mb-6">Web3 Dashboard</h1>
-            <button onClick={create}>clivk</button>
-            
-        </div>
+            <button onClick={createBounty}>clivk</button>
+            <br></br>
+            <button onClick={availBounty}>VAI</button>
+        </div>  
     );
 }
